@@ -71,6 +71,7 @@ NuxtLayout 기능을 통해 동적으로 레이아웃을 적용할 수 있다.
 
 
 </details>
+<br>
 
 
 ## Nuxt3 프로젝트 세팅
@@ -126,6 +127,79 @@ NuxtLayout 기능을 통해 동적으로 레이아웃을 적용할 수 있다.
    ```bash
    npm run dev
    ```
+
+</details>
+<br>
+
+## NuxtWelcome과 LazyNuxtWelcome 지연로딩
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+NuxtJS를 설치한 후 구성되는 최상위 app.vue 컴포넌트의 template영역에 NuxtWelcome이라는 컴포넌트가 선언되어 있다.
+해당 컴포넌트는 NuxtJS가 기본적으로 제공하는 컴포넌트로 [.nuxt/components.d.ts](.nuxt/components.d.ts) 파일에 등록된 컴포넌트이다.  
+_GlobalComponents interface를 보면 해당 컴포넌트 외에도 다른 컴포넌트들이 있는것을 확인할 수 있다.
+
+```ts
+interface _GlobalComponents {
+   /* 생략 */
+   'NuxtWelcome': typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
+   /* 생략 */
+}
+export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
+```
+
+실제 해당 컴포넌트는 [node_modules/nuxt/dist/app/components/welcome.vue](node_modules/nuxt/dist/app/components/welcome.vue) 경로에서 확인할 수 있다.
+
+_GlobalComponents interface에 선언된 다른 기본 컴포넌트들도 NuxtWelcome과 같이 내장되어있으며 공식문서 등의 래퍼런스를 확인하여 기능을 익힐 수 있다.
+
+추가로 해당 컴포넌트는 LazyComponent의 제네릭 타입으로 import되어 LazyNuxtWelcome이라는 이름으로도 등록되어 있다.
+
+### LazyNuxtWelcome과 Lazy Load(지연로딩)
+먼저 Lazy Load란 우리말로 지연 로딩이라고 부르며 특정 리소스(컴포넌트, 페이지 등)을 필요한 시점에 로딩하는 것을 말한다.  
+
+js에서는 보통 import문을 최상단에 선언하여 불러오는데 해당 방식을 문법적으로는 Static import(정적 임포트) 동작 시점 측면에서는 Eager Load(즉시 로드)이라고 정의할 수 있다.
+
+Lazy Load 지연 로딩은 해당 방법 대신 import() 함수를 사용하여 필요한 시점에 호출하여 로딩할 수 있다.
+
+자주 쓰는 공통 컴포넌트일 경우에는 정적 Static import를 권장하지만,  
+무거운 페이지 단위의 컴포넌트 혹은 Modal, Chart, Map 같은 대형 UI, 관리자 페이지와 같이  
+시스템적인 설정이 필요한 자주 사용하지 않는 화면에서 사용하는 것이 바람직한 예로 볼 수 있다.  
+
+VueJS에서도 Router import시 앞서 언급한 import() 함수를 호출하여 Lazy Load를 사용할 수 있다.
+```js
+const routes = [
+  {
+    path: '/mypage',
+    component: () => import('./pages/MyPage.vue')
+  }
+]
+
+```
+
+#### 지연 로딩(Lazy Load)의 중요점
+- 퍼포먼스 최적화
+  - 초기 번들 크기 감소로 페이지 첫 로딩 속도가 향상된다.
+    - ex) First Paint, Time to Interactive 등 개선
+- 코드 스플리팅
+  - webpack이나 vite는 import()를 만나면 자동으로 별도의 chunk(단위)로 분리한다.
+    - ex) [즉시] app.js (안에 MyPage.js 존재) → [지연] app.js, MyPage.[hash].js 로 분리
+   - 브라우저에서 요청 발생시 분리된 컴포넌트 MyPage.[hash].js 파일을 브라우저에 추가로 다운로드한다.
+
+#### First Paint란?
+웹 사이트를 열었을 때 최초로 화면이 출력되는 시점으로, 예를들어 하얀 화면만 있다가 글씨나 배경이 처음으로 출력되는 순간을 말한다.
+
+#### Time To Interactive란?
+사용자가 클릭하거나 스크롤을 할 수 있을 정도로 웹 사이트가 완전히 준비된 시점을 말한다.  
+버튼이 보이지만 아직 안눌리는 상태는 아직 준비 안 된 것이며, 눌렀을 때 반응하는 시점이 바로 `Time To Interactive` 이다.
+
+</details>
+<br>
+
+## 템플릿
+<details>
+<summary>펼치기/접기</summary>
+<br>
 
 </details>
 <br>
