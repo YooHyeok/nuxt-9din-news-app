@@ -240,6 +240,53 @@ NuxtJS에서는 루트 경로에 존재하는 components 디렉토리 하위의 
 </details>
 <br>
 
+## NuxtPage와 pages 디렉토리 기반 라우팅
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+1. 중첩 라우트(index.vue)
+pages 디렉토리 하위에 새로운 디렉토리를 생성하고, index.vue 라는 이름으로 컴포넌트를 생성할 경우 디렉토리 기반으로 `{locahlost:port}/bookmark` 주소로 라우팅이 된다.
+
+- 라우팅 경로: {locahlost:port}/bookmark
+- 리소스 경로: pages/bookmark/index.vue
+- 하위 폴더, 하위 경로를 구조적으로 관리할 때 주로 사용하며, 유지보수와 확정성에 유리하다.
+  - 예를들어 bookmark관련 컴포넌트들을 관리해야할 때 디렉토리로 분류하여 관리한다.
+    - bookmark/components/컴포넌트.vue
+    - bookmark/index.js
+    - 구조
+      ```
+      📂pages/
+      └── 📂bookmark/
+          ├── 📂components/
+          │   └── 컴포넌트.vue
+          └── index.vue
+      ```
+
+2. 단일 라우트(컴포넌트명.vue)
+
+- 라우팅 경로: {locahlost:port}/bookmark
+- 리소스 경로: pages/bookmark.vue
+  - 폴더 없이 단순 파일명 기반 라우팅으로 작은 프로젝트나 단순 페이지 구성에 적합하다.
+    - bookmark/components/컴포넌트.vue
+    - bookmark/index.js
+    - 구조
+      ```
+      📂pages/
+      └── bookmark.vue
+      ```
+
+### NuxtPage
+위의 pages 디렉토리 기반 라우팅을 하기 위해서는 app.vue 컴포넌트 혹은 출력할 컴포넌트의 출력할 위치에 `<NuxtPage />` 라는 Nuxt 기본 제공 컴포넌트를 선언해야한다.
+router-view와는 다르게 여러 컴포넌트에서 중복해서 사용할 수는 없다.
+
+#### 주의점
+이때 bookmark/comoponents 라는 디렉토리를 추가하여 컴포넌트를 만들경우 index.vue에서 import문을 선언하여 사용해야 한다.
+루트 하위의 components가 아닌 components 디렉토리는 전역으로 등록되지 않는다.
+
+</details>
+<br>
+
 ## 템플릿
 <details>
 <summary>펼치기/접기</summary>
