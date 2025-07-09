@@ -196,6 +196,27 @@ const routes = [
 </details>
 <br>
 
+## NuxtRouteAnnouncer
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+NuxtJS를 설치한 후 구성되는 최상위 app.vue 컴포넌트의 template영역에 NuxtRouteAnnouncer이라는 컴포넌트가 선언되어 있다.  
+해당 컴포넌트는 접근성(A11Y) 관련 내장 컴포넌트이다.  
+페이지가 변경될 때 화면 리더(Screen Reader)에게 새로운 경로를 알리는 역할을 한다.  
+여기서 말하는 화면 리더는 각 장애인 또는 시력이 약한 사람이 컴퓨터나 스마트폰 화면의 내용을 음성으로 듣거나 점자 디스플레이로 출력할 수 있게 도와주는 보조 기술(Assistive Technology)를 말한다.  
+예를들면 시각 장애인이 사용하는 스크린 리더가 경로 변화를 인식할 수 있게 한다.   
+만약 `<main>` 컨텐츠가 바뀌었음을 시각적으로 보지 못해도 음성으로 안내받을 수 있다.  
+SPA 에서는 페이지 전환 시 실제로 HTML 전체가 바뀌지 않고 Vue 라우터만 바뀌기 때문에 스크린 리더는 페이지가 바뀌었다는 것을 감지하지 못하기 때문에 이러한 도우미 역할을 하는 컴포넌트이다.
+
+해당 컴포넌트는 접근성이 필요할때 사용하는 컴포넌트 이므로 필수 컴포넌트가 아니다.
+
+[node_modules/nuxt/dist/app/components/nuxt-route-announcer.js](node_modules/nuxt/dist/app/components/nuxt-route-announcer.js)에 존재하며 .vue 확장자가 아닌 .js 확장자로 구현된 컴포넌트이다.  
+
+
+</details>
+<br>
+
 ## 템플릿
 <details>
 <summary>펼치기/접기</summary>
