@@ -217,6 +217,29 @@ SPA 에서는 페이지 전환 시 실제로 HTML 전체가 바뀌지 않고 Vue
 </details>
 <br>
 
+## components 디렉토리와 자동 전역 등록
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+NuxtJS에서는 루트 경로에 존재하는 components 디렉토리 하위의 모든 컴포넌트들을 자동으로 전역에 등록해준다.  따라서 import문 없이 자동으로 import 할 수 있다.  
+![alt text](image.png)
+```vue
+<template>
+  <div>
+    <AppHeader />
+  </div>
+</template>
+<script setup lang="ts">
+/* AppHeader 컴포넌트를 정적 import 및 component 등록작업을 하지 않아도 출력된다! */
+</script>
+```
+
+해당 기능은 다음으로 배울 pages 디렉토리 기반 라우팅 방식에서도 자동 import되어 동일하게 사용이 가능하다.
+
+</details>
+<br>
+
 ## 템플릿
 <details>
 <summary>펼치기/접기</summary>
