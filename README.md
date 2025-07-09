@@ -245,7 +245,7 @@ NuxtJS에서는 루트 경로에 존재하는 components 디렉토리 하위의 
 <summary>펼치기/접기</summary>
 <br>
 
-1. 중첩 라우트(index.vue)
+### 1. 중첩 라우트(index.vue)
 pages 디렉토리 하위에 새로운 디렉토리를 생성하고, index.vue 라는 이름으로 컴포넌트를 생성할 경우 디렉토리 기반으로 `{locahlost:port}/bookmark` 주소로 라우팅이 된다.
 
 - 라우팅 경로: {locahlost:port}/bookmark
@@ -263,7 +263,7 @@ pages 디렉토리 하위에 새로운 디렉토리를 생성하고, index.vue �
           └── index.vue
       ```
 
-2. 단일 라우트(컴포넌트명.vue)
+### 2. 단일 라우트(컴포넌트명.vue)
 
 - 라우팅 경로: {locahlost:port}/bookmark
 - 리소스 경로: pages/bookmark.vue
@@ -307,16 +307,16 @@ router-view와는 다르게 여러 컴포넌트에서 중복해서 사용할 수
 2. nuxt.config.ts 파일에 아래 코드를 추가해준다.
    ```ts
    export default defineNuxtConfig({
-   vite: {
-      css: {
-         preprocessorOptions: {
-         scss: {
-            /* 전역적으로 사용되는 css의 상대경로 등록 및 관리 */
-            additionalData: '@use "@/assets/scss/global.scss" as *;'
-         }
-         }
-      }
-   }
+		vite: {
+				css: {
+					preprocessorOptions: {
+					scss: {
+							/* 전역적으로 사용되는 css의 상대경로 등록 및 관리 */
+							additionalData: '@use "@/assets/scss/global.scss" as *;'
+					}
+					}
+				}
+		}
    })
    ```
 
@@ -324,31 +324,110 @@ router-view와는 다르게 여러 컴포넌트에서 중복해서 사용할 수
    - `AS-IS`
       ```ts
       export default defineNuxtConfig({
-      compatibilityDate: '2025-05-15',
-      devtools: { enabled: true },
+				compatibilityDate: '2025-05-15',
+				devtools: { enabled: true },
       })
       ```
    - `TO-BE`
       ```ts
       export default defineNuxtConfig({
-      compatibilityDate: '2025-05-15',
-      devtools: { enabled: true },
-      vite: {
-         css: {
-            preprocessorOptions: {
-            scss: {
-               /* 전역적으로 사용되는 css의 상대경로 등록 및 관리 */
-               additionalData: '@use "@/assets/scss/global.scss" as *;'
-            }
-            }
-         }
-      }
+				compatibilityDate: '2025-05-15',
+				devtools: { enabled: true },
+				vite: {
+					css: {
+							preprocessorOptions: {
+							scss: {
+								/* 전역적으로 사용되는 css의 상대경로 등록 및 관리 */
+								additionalData: '@use "@/assets/scss/global.scss" as *;'
+							}
+							}
+					}
+				}
       })
       ```
+</details>
+<br>
+
+## Pinia 설치 및 설정
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+### Pinia란?
+Vue3의 공식 상태 관리 라이브러리이다.  
+기존 Vuex의 후속(기술적 후속이지만 만든사람과 구조는 다름)이라고 볼 수 있으며, 훨씬 더 간결하고 타입친화적이고 모듈화에 유리한 구조를 가지고 있다.  
+
+Vue는 props, emit으로 컴포넌트끼리 데이터를 전달하지만, 계층구조기 깊어질수록 복잡해진다.  
+이에 Vuex가 나왔지만 문법이 복잡하고 boilerplate(반복코드)가 많았다.  
+Pinia는 Vuex보다 더 단순하고 직관적인 방식으로 상태 관리를 할 수 있다. 
+
+<br>
 
 
+| 항목             | Vuex (v3/v4)                    | Pinia                             |
+| -------------- | ------------------------------- | --------------------------------- |
+| 사용 가능 Vue 버전   | Vue 2, 3                        | Vue 3 이상                          |
+| 구조             | State, Getter, Mutation, Action | State, Getter, Action            |
+| Mutation 필요 여부 | ✅ 필수                            | ❌ 필요 없음 (Action에서 직접 state 변경 가능) |
+| 코드 길이          | 많고 중복됨                          | 매우 간결                             |
+| TypeScript 지원  | 불완전                             | ✅ 매우 뛰어남                          |
+| 모듈화 방식         | 네임스페이스                          | 함수를 통한 분리형 구조                     |
 
+<br>
 
+---
+<br>
+
+### Nuxt Pinia 설치 가이드
+
+1. scss npm 의존성 설치
+   ```
+   npm install pinia @pinia/nuxt
+   ```
+
+2. nuxt.config.ts 파일에 아래 코드를 추가해준다.
+   ```ts
+   export default defineNuxtConfig({
+		modules: ['@pinia/nuxt']
+   })
+   ```
+
+- nuxt.config.ts
+   - `AS-IS`
+      ```ts
+      export default defineNuxtConfig({
+				compatibilityDate: '2025-05-15',
+				devtools: { enabled: true },
+				vite: {
+					css: {
+						preprocessorOptions: {
+							scss: {
+								/* 전역적으로 사용되는 css의 상대경로 등록 및 관리 */
+								additionalData: '@use "@/assets/scss/global.scss" as *;'
+							}
+						}
+					}
+				},
+			})
+      ```
+   - `TO-BE`
+      ```ts
+      export default defineNuxtConfig({
+				compatibilityDate: '2025-05-15',
+				devtools: { enabled: true },
+				vite: {
+					css: {
+						preprocessorOptions: {
+							scss: {
+								/* 전역적으로 사용되는 css의 상대경로 등록 및 관리 */
+								additionalData: '@use "@/assets/scss/global.scss" as *;'
+							}
+						}
+					}
+				},
+				modules: ['@pinia/nuxt']
+			})
+      ```
 </details>
 <br>
 
