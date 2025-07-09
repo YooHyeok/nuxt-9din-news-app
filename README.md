@@ -68,8 +68,6 @@ Slot 기능을 이용해 외부 레이아웃 틀을 정의하는 공간이다.
 예를 들어 팝업, 다이얼로그 등 공통 레이아웃이 필요한 경우에 사용된다.  
 NuxtLayout 기능을 통해 동적으로 레이아웃을 적용할 수 있다.  
 
-
-
 </details>
 <br>
 
@@ -252,8 +250,8 @@ pages 디렉토리 하위에 새로운 디렉토리를 생성하고, index.vue �
 - 리소스 경로: pages/bookmark/index.vue
 - 하위 폴더, 하위 경로를 구조적으로 관리할 때 주로 사용하며, 유지보수와 확정성에 유리하다.
   - 예를들어 bookmark관련 컴포넌트들을 관리해야할 때 디렉토리로 분류하여 관리한다.
-    - bookmark/components/컴포넌트.vue
-    - bookmark/index.js
+    - pages/bookmark/components/컴포넌트.vue
+    - pages/bookmark/index.vue
     - 구조
       ```
       📂pages/
@@ -268,12 +266,24 @@ pages 디렉토리 하위에 새로운 디렉토리를 생성하고, index.vue �
 - 라우팅 경로: {locahlost:port}/bookmark
 - 리소스 경로: pages/bookmark.vue
   - 폴더 없이 단순 파일명 기반 라우팅으로 작은 프로젝트나 단순 페이지 구성에 적합하다.
-    - bookmark/components/컴포넌트.vue
-    - bookmark/index.js
+    - pages/bookmark/components/컴포넌트.vue
+    - pages/bookmark.vue
     - 구조
       ```
       📂pages/
       └── bookmark.vue
+      ```
+
+<br>
+
+- 라우팅 경로: {locahlost:port}/
+- 리소스 경로: pages/index.vue
+  - 폴더 없이 단순 파일명 기반 라우팅으로 작은 프로젝트나 단순 페이지 구성에 적합하다.
+    - pages/index.vue
+    - 구조
+      ```
+      📂pages/
+      └── index.vue
       ```
 
 ### NuxtPage
@@ -428,6 +438,132 @@ Pinia는 Vuex보다 더 단순하고 직관적인 방식으로 상태 관리를 
 				modules: ['@pinia/nuxt']
 			})
       ```
+</details>
+<br>
+
+## 전역 SCSS @import 이슈
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+전역으로 사용하는 scss 파일에서 다른 scss 모듈을 import 해야할 경우가 있는데, sass 버전에 따라 @import가 지원되지 않을 수 있다.  
+<br>
+
+###  @import 변수 사용 3.0.0 버전 이슈 - @forward
+<details>
+<summary>접기/펼치기</summary>
+<br>
+
+```
+Deprecation Warning [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+
+More info and automated migrator: https://sass-lang.com/d/import
+
+  ╷
+1 │ @import './color';
+  │         ^^^^^^^^^
+  ╵
+    assets\scss\global.scss 1:9  @use
+    components\AppNav.vue 1:1    root stylesheet
+
+Deprecation Warning [import]: Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.
+```
+</details>
+
+<br>
+
+위 오류는 sass 3.0.0부터 @import문법이 더이상 사용되지 않아 발생하는 문법이다.  
+sass 3.0.0에서는 scss파일에 불러온 뒤 외부로 export하는 경우에는 @forward를 사용하면 된다.
+
+###  @import 변수 사용 3.0.0 버전 이슈 - @use
+<details>
+<summary>접기/펼치기</summary>
+<br>
+
+```
+ ERROR  Internal server error: [sass] Undefined variable.                                                                                                                                                             오전 1:40:32  
+   ╷
+14 │     color: $color-black-700;
+   │            ^^^^^^^^^^^^^^^^
+   ╵
+  assets\scss\global.scss 14:12  @use
+  components\AppHeader.vue 1:1   root stylesheet
+  Plugin: vite:css
+  File: C:/Programming/workspace_vs/nuxt-9din-news-app/components/AppHeader.vue?vue&type=style&index=0&scoped=a54da7ff&lang.scss:14:12
+  [sass] Undefined variable.
+     ╷
+  14 │     color: $color-black-700;
+     │            ^^^^^^^^^^^^^^^^
+     ╵
+    assets\scss\global.scss 14:12  @use
+    components\AppHeader.vue 1:1   root stylesheet
+      at Object.wrapException (C:\Programming\workspace_vs\nuxt-9din-news-app\node_modules\sass\sass.dart.js:2302:47)
+      at C:\Programming\workspace_vs\nuxt-9din-news-app\node_modules\sass\sass.dart.js:88664:23
+      at _wrapJsFunctionForAsync_closure.$protected (C:\Programming\workspace_vs\nuxt-9din-news-app\node_modules\sass\sass.dart.js:4921:15)
+      at _wrapJsFunctionForAsync_closure.call$2 (C:\Programming\workspace_vs\nuxt-9din-news-app\node_modules\sass\sass.dart.js:38012:12)
+      at Object._asyncStartSync (C:\Programming\workspace_vs\nuxt-9din-news-app\node_modules\sass\sass.dart.js:4885:20)
+      at _EvaluateVisitor2.visitVariableExpression$body$_EvaluateVisitor0 (C:\Programming\workspace_vs\nuxt-9din-news-app\node_modules\sass\sass.dart.js:88670:16)
+      at _EvaluateVisitor2.visitVariableExpression$1 (C:\Programming\workspace_vs\nuxt-9din-news-app\node_modules\sass\sass.dart.js:88644:19)
+      at VariableExpression0.accept$1$1 (C:\Programming\workspace_vs\nuxt-9din-news-app\node_modules\sass\sass.dart.js:124128:22)
+      at VariableExpression0.accept$1 (C:\Programming\workspace_vs\nuxt-9din-news-app\node_modules\sass\sass.dart.js:124131:19)
+      at C:\Programming\workspace_vs\nuxt-9din-news-app\node_modules\sass\sass.dart.js:86730:41
+```
+
+</details>
+<br>
+
+위 오류는 $color-black-700라는 변수를 불러올 수 없어 발생한 오류이다.  
+sass 3.0.0에서는 `@import`문이 지원되지 않으므로 a.scss파일에서 b.scss 파일의 변수를 사용을 해야할 때는 `@use`를 사용한다.
+<br>
+
+### 대응 예시 코드
+- global.scss에서 color.scss을 외부로 내보내기
+   ```scss
+   @forward './color';
+   ```
+
+- global.scss에서 color.scss에 정의한 변수 사용
+   ```scss
+   @use './color' as *;
+
+   * {
+      color: $color-black-700;
+   }
+   ```
+
+- global.scss에서 color.scss에 정의한 변수 사용 - 별칭 접근
+   ```scss
+   @use './color' as color;
+
+   * {
+      color: color.$color-black-700;
+   }
+   ```
+
+- global.scss에서 color.scss를 내보내며 동시에 정의된 변수 사용
+   ```scss
+   @import './color';
+
+   @use './color' as *;
+
+   * {
+      color: $color-black-700;
+   }
+   ```
+   ```scss
+   @import './color';
+
+   @use './color' as color;
+
+   * {
+      color: color.$color-black-700;
+   }
+   ```
+
+
+
+
+
 </details>
 <br>
 
