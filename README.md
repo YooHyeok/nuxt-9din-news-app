@@ -612,6 +612,55 @@ sass 3.0.0에서는 `@import`문이 지원되지 않으므로 a.scss파일에서
 </details>
 <br>
 
+## scss 문법 - Nesting(중첩)
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+Nesting을 통해 상위 선택자의 반복을 줄일 수 있다.  
+이를 통해 복잡한 구조를 더 편리하게 개선할 수 있게 된다.  
+
+```html
+<div class="parent">
+	<div class="child"> <!-- red -->
+		<span></span><!-- black -->
+	</div>
+</div>
+<span></span><!-- blue -->
+```
+위와같은 구조에서 .parent div 의 하위의 .child div와 그 하위의 span 그리고 루트 span에 각각 다른 스타일을 적용하고 싶을때 일반적인 css라면 아래와 같이 적용해야한다.
+```css
+.parent .child {
+	color: 'red';
+}
+.parent .child span {
+	color: 'black';
+}
+span {
+  color: blue;
+}
+```
+
+scss의 Nesting(중첩) 문법을 사용할 경우 html을 중첩으로 쌓아가며 설계하는것 처럼 css의 중괄호 내에서 중첩 구조로 하나씩 접근이 가능해진다.
+```scss
+.parent {
+
+	.child {
+		color: 'red';
+
+		span {
+			color: 'black';
+		}
+	}
+}
+span {
+  color: blue;
+}
+```
+
+</details>
+<br>
+
 ## 템플릿
 <details>
 <summary>펼치기/접기</summary>
