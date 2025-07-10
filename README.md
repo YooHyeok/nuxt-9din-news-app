@@ -559,10 +559,55 @@ sass 3.0.0에서는 `@import`문이 지원되지 않으므로 a.scss파일에서
       color: color.$color-black-700;
    }
    ```
+</details>
+<br>
 
+## SCSS 문법 - Mixin(@mixin, @include)
+<details>
+<summary>펼치기/접기</summary>
+<br>
 
+```html
+<style>
+.exampleA{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+.exampleB{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+</style>
+```
+위와 같이 css 코드가 반복되는 경우 scss에서는 mixin 기능을 활용하여 함수로 추출이 가능하다.
 
+- _mixin.scss - mixin 정의
+   ```scss
+   @mixin flex-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+   }
+   ```
 
+- global.scss - 전역 scss에 등록
+   ```scss
+   @forward './mixin';
+   ```
+
+- style 태그에서 @include 통해 정의된 mixin을 호출
+   ```html
+   <style>
+   .exampleA{
+      @include flex-center
+   }
+   .exampleB{
+      @include flex-center
+   }
+   </style>
+   ```
 
 </details>
 <br>
