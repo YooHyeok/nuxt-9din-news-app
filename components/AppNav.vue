@@ -60,17 +60,13 @@ const navItems = ref([
 </script>
 <style lang="scss" scoped>
 .nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
 
   width: 100%;
   margin-top: 88px;
 
   &__list { // &: 상위(nav) → &__list = nav__list
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     
     list-style: none; // 도트 제거
 
@@ -78,9 +74,7 @@ const navItems = ref([
     gap: 24px; // 사이 간격: 자녀 요소들이 일정한 간격으로 떨어져있을 수 있도록 설정할 때 사용
 
     &__item { // &: 상위(nav_list) → &__item = nav__list_item
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @include flex-center;
 
       padding: 6px 12px;
 

@@ -6,9 +6,7 @@
 </script>
 <style lang="scss" scoped>
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
 
   margin-top: 100px;
 
