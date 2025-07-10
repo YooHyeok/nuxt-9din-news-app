@@ -661,6 +661,68 @@ span {
 </details>
 <br>
 
+## scss 문법 - &(상위 선택자 참조)
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+scss에서는 앞서 정리한 중첩 블록 내부에서 & 키워드를 사용할 수 있다.  
+& 키워드는 상위(부모) 선택자로 치환된다.  
+
+해당 치환은 변수가 아닌 단순 문자열로 치환되는것이므로,  
+만약 상위태그가 a라는 클래스명을 갖고 있고 하위태그의 이름이 a_b라는 클래스명 이라면  
+a 클래스 선택자 블록 내에서 중첩 문법을 사용할때 a_b에 접근하려면 &_b로 접근이 가능해진다.  
+
+아래의 예시를 보자.
+```html
+<div class="a">
+	<div class="a_b">
+	</div>
+</div>
+```
+a 클래스를 가진 div 태그 하위에 a_b 클래스를 가진 자식 div요소가 있다.  
+
+```scss
+.a {
+	&_b {
+
+	}
+}
+```
+위와 같이 .a 클래스 선택자로 접근한 뒤 중첩 구조에서 &를 사용하면 부모 요소인 a를 가르키므로 `'a' + '_b'` 와 같은 문자열 결합을 통해 `'a_b'` 가 된다.  
+
+```html
+<button class="btn active">버튼</button>
+<style>
+/* btn과 active 두 클래스를 동시에 가진 하나의 요소로 .btn .active(btn 자식 active)와 다름 */
+.btn.active { 
+	color: red;
+}
+</style>
+```
+
+```scss
+.btn {
+	&.active {
+		color: red;
+	}
+}
+```
+btn과 active를 두 클래스를 모두 가진 경우에 대한 효과를 줄때 위와 같이 사용한다.
+
+추가로 :active나 :last-child, :first-child 같은 문법을 사용할 수도 있다.
+```scss
+.list {
+	li {
+		&:last-child { /* 부모 요소 li 즉, 가장 마지막 li 요소 */
+			margin-right: 0;
+		}
+	}
+}
+```
+</details>
+<br>
+
 ## 템플릿
 <details>
 <summary>펼치기/접기</summary>
