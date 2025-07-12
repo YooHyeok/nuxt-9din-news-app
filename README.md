@@ -854,6 +854,38 @@ first-child와 마찬가지로 아래와 같이 p태그보다 늦게 p태그가 
 </details>
 <br>
 
+## css 문법 - gap
+<details>
+<summary>펼치기/접기</summary>
+<br>
+사이 간격으로 사용되며, 자녀 요소들이 일정한 간격으로 떨어져있을 수 있도록 설정할 때 사용한다.
+
+예를들어 ul > li로 구성된다고 가정해보자.
+```html
+<ul>
+	<li>1</li>
+	<li>2</li>
+	<li>3</li>
+</ul>
+```
+위와 같은 경우에서 ul 태그에 `gap:24px;`로 효과를 준다면 각 li 요소사이의 간격은 24px로 벌어지게 된다.  
+
+```html
+0px
+<li>1</li>
+12px
+12px
+<li>2</li>
+12px
+12px
+<li>3</li>
+0px
+```
+위와 같은 간격이 적용된다.  
+
+</details>
+<br>
+
 ## 템플릿
 <details>
 <summary>펼치기/접기</summary>
