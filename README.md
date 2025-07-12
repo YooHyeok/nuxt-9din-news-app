@@ -758,6 +758,53 @@ btn과 active를 두 클래스를 모두 가진 경우에 대한 효과를 줄�
 </details>
 <br>
 
+## css 문법 - rem과 em
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+### rem
+rem의 r은 root를 의미한다.  
+root 폰트 크기 (body에 정의된 기본 크기) 기준 상대값(배수)으로 계산된다. 
+`html {font-size: 16px;}` 이고, `p {font-size: 0.8rem}`의 경우 `p` 태그의 font-size는 `16px * 0.8 = 12.8px`와 같이 계산된다.  
+
+***html font-size를 설정하지 않을 경우, 기본 font-size는 `16px`이다.***
+
+```css
+html {
+	font-size: 16px;
+}
+p {
+	font-size: 0.8rem; /* root 즉, body에 정의된 font-size인 16px * 0.8 = 12.8px */
+}
+```
+
+rem은 font-size 뿐만 아니라 px단위를 사용하는 다른 속성에도 모두 사용가능한 단위이다.
+```css
+header {
+	padding: 10rem; /* 10 * 16px = 160px */
+}
+```
+
+### em
+부모 혹은 자신의 font-size에 대한 상대값(배수)로 계산된다.
+
+```css
+body {
+  font-size: 16px;
+}
+
+.container {
+  font-size: 3em; /* 3 * 16px = 48px */
+}
+
+.container p {
+  font-size: 0.5em; /* 0.5 * 48px = 24px */
+}
+```
+</details>
+<br>
+
 ## 템플릿
 <details>
 <summary>펼치기/접기</summary>
