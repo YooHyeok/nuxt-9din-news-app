@@ -723,6 +723,41 @@ btn과 active를 두 클래스를 모두 가진 경우에 대한 효과를 줄�
 </details>
 <br>
 
+## css 문법 - 선택자:nth-child(n)
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+
+`선택자:nth-child(n)` 형태의 문법으로 사용한다.  
+선택자의 부모선택자 안에 모든 요소 중 n번째 요소를 선택한다.
+
+```html
+<div class="parent">
+	<div class="child"></div>
+	<div class="child"></div>
+	<div class="child"></div>
+</div>
+```
+위와 같이 parent 하위에 동일한 이름의 child div가 3개 존재할 경우 `.child:nth-child(n)`로 접근한다면 `.child`의 부모 요소인 `.parent` 안의 모든 요소중 n번째 요소를 선택하게 된다.  
+
+
+```css
+.child:nth-child(1) { /* child의 부모 요소 parent의 자식중 1번째 요소 */
+	margin-left: 10px
+}
+.child:nth-child(2) {  /* child의 부모 요소 parent의 자식중 2번째 요소 */
+	margin-left: 0 - 10px
+}
+.child:nth-child(3) {  /* child의 부모 요소 parent의 자식중 3번째 요소 */
+	margin-right: 10px
+}
+```
+
+위의 예제에서는 모든 이름을 다 동일하게 맞췄지만, 사실상 부모요소의 n번째 요소를 가르키기 때문에 동일하지 않아도, 하나의 자식 접근에서 형제 요소까지 접근이 가능해진다.
+</details>
+<br>
+
 ## 템플릿
 <details>
 <summary>펼치기/접기</summary>
