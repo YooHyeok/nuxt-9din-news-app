@@ -805,6 +805,55 @@ body {
 </details>
 <br>
 
+## css 문법 - 선택자:first-child, 선택자:last-child
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+### first-child
+
+`선택자:first-child` 형태의 문법으로 사용된다.  
+동일한 요소들 중 가장 첫번째 요소에 접근한다.  
+
+```html
+<div class="parent">
+	<p>첫번째 노드</p>
+	<p>두번째 노드</p>
+</div>
+```
+위와같이 html이 구성되어있을 경우, `.parent p:fisrt-child`로 첫번째 노드를 감싸는 p태그를 선택할 수 있다.
+단, 아래와 같이 p태그보다 먼저 p태그가 아닌 태그가 올 경우에는, 첫번째 p태그가 선택될수 없다.
+
+```html
+<div class="parent">
+	<span>p태그가 아님</span>
+	<p>첫번째 노드</p>
+	<p>두번째 노드</p>
+</div>
+```
+
+### last-child
+first-child와 동일한 규칙으로 사용되며, 마지막 선택자를 선택한다.
+```html
+<div class="parent">
+	<p>첫번째 노드</p>
+	<p>두번째 노드</p>
+</div>
+```
+위와같이 html이 구성되어있을 경우, `.parent p:last-child`로 두번째 노드를 감싸는 p태그를 선택할 수 있다.
+first-child와 마찬가지로 아래와 같이 p태그보다 늦게 p태그가 아닌 태그가 올 경우에는, 두번째 p태그가 선택될수 없다.
+
+```html
+<div class="parent">
+	<p>첫번째 노드</p>
+	<p>두번째 노드</p>
+	<span>p태그가 아님</span>
+</div>
+```
+
+</details>
+<br>
+
 ## 템플릿
 <details>
 <summary>펼치기/접기</summary>
