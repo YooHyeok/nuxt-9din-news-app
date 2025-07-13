@@ -518,47 +518,47 @@ sass 3.0.0에서는 `@import`문이 지원되지 않으므로 a.scss파일에서
 
 ### 대응 예시 코드
 - global.scss에서 color.scss을 외부로 내보내기
-   ```scss
-   @forward './color';
-   ```
+  ```scss
+  @forward './color';
+  ```
 
 - global.scss에서 color.scss에 정의한 변수 사용
-   ```scss
-   @use './color' as *;
+  ```scss
+  @use './color' as *;
 
-   * {
-      color: $color-black-700;
-   }
-   ```
+  * {
+    color: $color-black-700;
+  }
+  ```
 
 - global.scss에서 color.scss에 정의한 변수 사용 - 별칭 접근
-   ```scss
-   @use './color' as color;
+  ```scss
+  @use './color' as color;
 
-   * {
-      color: color.$color-black-700;
-   }
-   ```
+  * {
+    color: color.$color-black-700;
+  }
+  ```
 
 - global.scss에서 color.scss를 내보내며 동시에 정의된 변수 사용
-   ```scss
-   @import './color';
+  ```scss
+  @import './color';
 
-   @use './color' as *;
+  @use './color' as *;
 
-   * {
-      color: $color-black-700;
-   }
-   ```
-   ```scss
-   @import './color';
+  * {
+    color: $color-black-700;
+  }
+  ```
+  ```scss
+  @import './color';
 
-   @use './color' as color;
+  @use './color' as color;
 
-   * {
-      color: color.$color-black-700;
-   }
-   ```
+  * {
+    color: color.$color-black-700;
+  }
+  ```
 </details>
 <br>
 
@@ -566,6 +566,54 @@ sass 3.0.0에서는 `@import`문이 지원되지 않으므로 a.scss파일에서
 <br>
 
 ## [CSS 문법](markdown/CSS.md)
+<br>
+
+## 타입스크립트 이슈 - verbatimModuleSyntax
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+타입스크립트 4.5 이상에서 verbatimModuleSyntax 옵션이 true일 경우 타입과 값의 구분이 명확해 져야 한다.  
+즉, 타입만 쓰는 경우에는 import type을 사용하도록 강제된다.
+
+- [types/nav.ts](types/nav.ts)
+  ```ts
+  export interface Nav {
+  idx: number;
+  label: string;
+  value: string;
+  }
+  ```
+- [components/AppNav.vue](components/AppNav.vue)
+  ```js
+  import { Nav } from '~/types/nav';
+  ```
+
+예를들어 위 같이 타입을 정의하고, 특정 컴포넌트나 js모듈 파일에서 import 할 경우 아래와 같은 오류가 발생한다.
+
+```
+`컴포넌트` is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.ts-plugin(1484)
+```
+
+`Nav`가 타입인지 값인지 모호하므로 오류가 발생한 것이다.  
+
+```js
+import type { Nav } from '~/types/nav';
+```
+
+위와 같이 `type`을 명시하면 타입 전용 import로 인식되어 오류가 사라진다.  
+
+해당 옵션을 켜고 끄기 위해서는 tsconfig.json에서 아래와 같이 compilerOptions에 verbatimModuleSyntax옵션을 추가하고 true/false 값을 통해 on/off 할 수 있다.  
+
+- tsconfig.json
+  ```json
+  {
+  "compilerOptions": {
+    "verbatimModuleSyntax": false
+  }
+  }
+  ```
+</details>
 <br>
 
 ## 템플릿
