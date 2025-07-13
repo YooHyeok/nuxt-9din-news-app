@@ -1,10 +1,22 @@
 <template>
-  <div>
-    <!-- 메인 페이지 입니다. -->
+  <div class="page">
+    <CardUI />
   </div>
 </template>
 <script setup lang="ts">
-</script>
-<style scoped>
+import CardUI from '~/pages/components/Card.vue';
 
+</script>
+<style lang="scss" scoped>
+.page {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: center;
+
+  width: calc(100% - 96px);
+
+  padding: 48px;
+  gap: 24px;
+}
 </style>
