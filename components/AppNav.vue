@@ -1,60 +1,51 @@
 <template>
-  <div class="nav">
+  <nav class="nav">
     <ul class="nav__list">
       <li v-for="nav in navItems" :key="nav.idx" class="nav__list__item">{{ nav.label }}</li>
     </ul>
-  </div>
+  </nav>
 </template>
 <script setup lang="ts">
-const navItems = ref([
+/**
+ * 타입스크립트 4.5버전 이상부터는 verbatimModuleSyntax가 기본적으로 켜져있다.  
+ * 값인지, 타입인지를 명확하게 구분지어야 하므로 type 키워드를 import시 추가해줘야한다.
+ */
+import type { Nav } from '~/types/nav';
+const navItems = ref<Nav[]> ([
     {
         idx: 0,
         label: "일반시사",
         value: "General",
-        path: "general",
-        isClicked: false,
     },
     {
         idx: 1,
         label: "비즈니스",
         value: "Business",
-        path: "business",
-        isClicked: false,
     },
     {
         idx: 2,
         label: "엔터테인먼트",
         value: "Entertainment",
-        path: "entertainment",
-        isClicked: false,
     },
     {
         idx: 3,
         label: "건강",
         value: "Health",
-        path: "health",
-        isClicked: false,
     },
     {
         idx: 4,
         label: "과학",
         value: "Science",
-        path: "science",
-        isClicked: false,
     },
     {
         idx: 5,
         label: "스포츠",
         value: "Sports",
-        path: "sports",
-        isClicked: false,
     },
     {
         idx: 6,
         label: "테크놀리지",
         value: "Technology",
-        path: "technology",
-        isClicked: false,
     },
 ]);
 </script>
@@ -80,7 +71,6 @@ const navItems = ref([
 
       background-color: $color-gray-200;
       border-radius: 20px;
-      color: $color-black-700;
 
       cursor: pointer;
     }
