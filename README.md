@@ -649,6 +649,40 @@ axios와 같은 라이브러리로 `ofetch` 기반이다.
 </details>
 <br>
 
+## Top-Level Await 이슈
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+```vue
+const {data, pending, error, refresh} = await useAsyncData("getNews", () => $fetch(API_URL));
+```
+
+`<script>` 블록 내 최상위 스코프에서 useAsyncData 함수 앞에 await 키워드를 붙힐 경우 아래와 같은 오류가 발생했다.
+
+```
+SyntaxError: await is only valid in async functions and the top level bodies of modules
+```
+
+await는 CommonJS환경에서 async함수 내부에서 작동하며, 일반적으로 많이 사용되는 방식이다.  
+예외가 있는데, ES Module일 경우에는 최상위 스코프(Top-Level)에서 작동이 가능하다.  
+
+### CommonJS와 ES Module
+- CommonJS [CJS]: NodeJS의 구버전 require, module.exports 방식이다.  
+- ES Module [ESM]: ES6(ES2015) 방식으로 import, export 방식이다.  
+
+### 설정법
+- tsconfig.json
+  ```json
+  "compilerOptions": {
+    "module": "ESNext",              // Top-level await 사용 가능
+    "target": "ESNext",              // 최신 JS 문법 지원
+  }
+  ```
+
+</details>
+<br>
+
 ## 템플릿
 <details>
 <summary>펼치기/접기</summary>
