@@ -683,6 +683,30 @@ await는 CommonJS환경에서 async함수 내부에서 작동하며, 일반적�
 </details>
 <br>
 
+## vetur 이슈 - Cannot find name 'defineProps'.Vetur(2304)
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+Vue 3 + `<script setup>` 문법을 사용하고 있는데, Vetur 확장 또는 프로젝트 설정이 이를 제대로 인식하지 못해서 발생하는 문제이다.
+
+vetur는 Vue 2 중심의 Extention이고, script setup 문법을 완벽하게 지원하지 않는다.  
+따라서 volar을 설치하고 vetur을 지운다.  
+
+로컬 pc에서 Vue2 프로젝트를 사용하기 때문에 vscode상에서 현재 프로젝트에서만 vetur옵션을 꺼버린다.  
+
+- Ctrl + Shift + R
+- settings.json - 최상위레벨
+  ```json
+  {
+    "vetur.validation.template": false,
+    "vetur.validation.style": false,
+    "vetur.validation.script": false
+  }
+  ```
+</details>
+<br>
+
 ## 템플릿
 <details>
 <summary>펼치기/접기</summary>
