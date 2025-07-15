@@ -62,3 +62,25 @@ export const useExOptionsStore = defineStore('eosCounter', {
     }
   }
 })
+
+/**
+ * [defineStore - options]
+ * - `<state>`: composition api 방식으로 선언한다.
+ * - `<getters>`: computed 컴포저블을 활용한다.
+ */
+export const useExSetupStore = defineStore('essCounter', () => {
+  const count = ref<number>(1);
+  const name = ref<string>('yooHyeok');
+
+  // Getters
+  const doubleCount = computed(() => count.value * 2);
+  const doublePlusOne = computed(() => count.value * 3);
+
+  // Actions
+  const increment = () => count.value++;
+  function randomizeCounter() {
+    count.value = Math.round(100 * Math.random())
+  }
+
+  return {count, name, doubleCount, doublePlusOne, increment, randomizeCounter}
+})
