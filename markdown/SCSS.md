@@ -1,6 +1,68 @@
 # [README.md](../README.md)
+<br>
 
-# SCSS 문법
+# SCSS 가이드
+
+## scss 전역 파일 상대경로 등록 및 관리 설정 - nuxt.config.ts 
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+1. scss npm 의존성 설치
+   ```
+   npm install -D sass
+   ```
+   - D옵션: devDependencies 포함  
+      sass는 실제 사용자가 웹 페이지를 볼 때 동작하는 코드가 아니라, 개발 시점 .scss 또는 .sass 파일을 .css로 변환하는 역할을 한다.  
+			즉, 브라우저에서 직접 실행되는 게 아니라, 빌드 도구(vite, Webpack등) 에서만 사용된다.  
+			따라서 dependencies(운영) 대신 devDependencies(개발 빌드시 필요)에 포함시키는것이 적절하다.  
+			조금 더 구체적으로 예를들어 보자면 axios같이 런타임시 지속적으로 브라우저에서 사용하는 모듈의 경우 node_modules에서 axios관련 필요한 모듈 파일들을 함께 웹패킹하여 dist로 패키징해야 하기 때문에 dependencies에 포함하지만, scss는 빌드 및 웹패킹 당시에만 컴파일하기때문에 최종 컴파일에 필요한 모듈로서 devDependencies에 포함시키는것이다.
+
+
+
+2. nuxt.config.ts 파일에 아래 코드를 추가해준다.
+   ```ts
+   export default defineNuxtConfig({
+		vite: {
+				css: {
+					preprocessorOptions: {
+					scss: {
+							/* 전역적으로 사용되는 css의 상대경로 등록 및 관리 */
+							additionalData: '@use "@/assets/scss/global.scss" as *;'
+					}
+					}
+				}
+		}
+   })
+   ```
+
+- nuxt.config.ts
+   - `AS-IS`
+      ```ts
+      export default defineNuxtConfig({
+				compatibilityDate: '2025-05-15',
+				devtools: { enabled: true },
+      })
+      ```
+   - `TO-BE`
+      ```ts
+      export default defineNuxtConfig({
+				compatibilityDate: '2025-05-15',
+				devtools: { enabled: true },
+				vite: {
+					css: {
+							preprocessorOptions: {
+							scss: {
+								/* 전역적으로 사용되는 css의 상대경로 등록 및 관리 */
+								additionalData: '@use "@/assets/scss/global.scss" as *;'
+							}
+							}
+					}
+				}
+      })
+      ```
+</details>
+<br>
 
 ## Mixin(@mixin, @include)
 <details>

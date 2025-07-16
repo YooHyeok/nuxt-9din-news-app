@@ -1,6 +1,6 @@
 # [README.md](../README.md)
 
-# CSS 문법
+# CSS 가이드
 
 ## 선택자:nth-child(n)
 <details>
