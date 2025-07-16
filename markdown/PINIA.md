@@ -159,6 +159,465 @@ Pinia는 Vuex보다 더 단순하고 직관적인 방식으로 상태 관리를 
 </details>
 <br>
 
+## Pinia 기본 템플릿 예제코드
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+### [예제 파일: /sotres/example.ts](../sotres/example.ts)
+
+### defineStore 
+
+pinia에서 store를 정의하는 메소드로 아래와 같은 형태로 모듈 내보내기를 구현한다.  
+ ```ts
+  import { defineStore } from 'pinia';
+  export const useStore = defineStore(/* 고유 키 */, {/* 옵션 */})
+  ```
+
+2개의 매개변수를 받으며 상세 설명은 다음과 같다.  
+- **args1**: 앱 전체에서 사용될 해당 스토어가 갖는 고유한 아이디값으로 컴포넌트에서 호출할때 사용된다.
+- **args2**: object형태로 store에 관련된 `옵션`을 정의한다.
+  - `state`
+  - `getters`
+  - `actions`
+<br> 
+<br> 
+---
+---
+<br> 
+
+### pinia 옵션 정의 - `options`
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+
+- `<state>`
+    - option 객체에 메소드로 정의한다.  
+    - 공식 문서에서는 화살표 함수 형태로 정의한다.  
+      - Object 형식으로 state를 정의하고, 해당 Object를 return해줘야한다.
+      - 예제 코드
+        ```ts
+        {
+          state: () => ({count: 1, name: 'yooHyeok'})
+        }
+        ```
+    - 객체 메소드 정의 방식으로 선언이 가능하며 아래 두가지 방법으로 선언이 가능하다.
+      - 함수 표현 방식
+        ```ts
+        {
+          state: function ()  {
+            return {count:1, name: 'yooHyeok'} 
+          }
+        }
+        ```
+      - 함수 선언 방식
+        ```ts
+        {
+          state()  {
+            return {count:1, name: 'yooHyeok'} 
+          }
+        }
+        ```
+- `<getters>`
+    - option 객체의 하위 객체인 getters 객체에 메소드로 정의한다.
+    - template 내에서는 반응형으로 동작하지만 setup 방식 에서는 computed로 감싸야 최신 데이터를 가져올 수 있다.
+    - 공식 문서에서는 화살표 함수 형태로 정의한다.  
+      - state를 매개변수로 받는다.  
+      - 계산된 값을 return해줘야 한다.
+      - 예제 코드
+        ```ts
+        {
+          /* state 생략 */
+          getters: {
+            doubleCount: (state) => state.count * 2
+          }
+        }
+        ```
+    - state를 정의하는 문법과 동일하게 같이 함수 선언식, 함수 표현식 모두 가능하다.
+      - state를 this키워드로 접근할 수 있다.
+      - 타입스크립트 사용중 함수 선언식,표현식의 경우 strict모드가 true일 경우 반환타입을 정의해야한다.
+      - 함수 표현 방식
+        ```ts
+        {
+          /* state 생략 */
+          getters: {
+            addState: function(state): string { // 함수 표현식
+              return state.count + state.name
+            }
+          }
+        }
+        ```
+      - 함수 표현 방식 - state this 접근
+        ```ts
+        {
+          /* state 생략 */
+          getters: {
+            addState: function(state): string { // 함수 표현식 state를 this로 접근
+              return this.count + this.name
+            }
+          }
+        }
+        ```
+      - 함수 선언 방식: `state () {}`  
+        ```ts
+        {
+          /* state 생략 */
+          getters: {
+            addState(state): string { // 함수 표현식
+              return state.count + state.name
+            }
+          }
+        }
+        ```
+      - 함수 표현 방식 - state this 접근
+        ```ts
+        {
+          /* state 생략 */
+          getters: {
+            addState(state): string { // 함수 선언식 state를 this로 접근
+              return this.count + this.name
+            }
+          }
+        }
+        ```
+- `<actions>`
+  - option 객체의 하위 객체인 actions 객체에 메소드로 정의한다.
+  - 공식 문서에서는 함수 선언식 형태로 정의한다.
+  - 함수 표현식과, 화살표 함수 문법도 지원한다.
+  - 함수 선언식, 함수 표현식에서는 this 키워드로 state에 접근할 수 있다.
+  - 예제코드
+    - 함수 선언식
+      ```ts
+      {
+        /* state 생략 */
+        /* getters 생략 */
+        actions: {
+          incrementA() {
+            this.count ++;
+          }
+        }
+      }
+      ```
+    - 함수 표현식
+      ```ts
+      {
+        /* state 생략 */
+        /* getters 생략 */
+        actions: {
+          incrementA: function() {
+            this.count ++;
+          }
+        }
+      }
+      ```
+    - 화살표 함수
+      - 화살표 함수는 state에 접근할 수 없으므로, useStore()와 같이 자기자신을 참조하도록 하여 접근한다.
+        ```ts
+        {
+          /* state 생략 */
+          /* getters 생략 */
+          actions: {
+            increment: () => {
+              useExOptionsStore().count++
+            }
+          }
+        }
+        ```
+</details>
+<br>
+
+### pinia 옵션 정의 - `setup`
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+#### 구성 및 특징
+defineStore 함수의 두번째 매개변수에서 화살표 함수를 활용해야 한다.  
+vue3의 composition API 문법을 따른다.  
+vue2의 mixin과 비슷한 느낌으로 컴포넌트 내 script를 구현하는것과 동일하게 구현한다.  
+script setup이 아닌 순수 모듈이므로, 정의한 모든 요소 및 함수들을 객체 형태로 return해야 한다.  
+
+- 완성코드
+    ```ts
+    export const useExSetupStore = defineStore('essCounter', () => {
+      // State
+      const count = ref<number>(1);
+      const name = ref<string>('yooHyeok');
+
+      // Getters
+      const doubleCount = computed(() => count.value * 2);
+      const doublePlusOne = computed(() => count.value * 3);
+
+      // Actions
+      const increment = () => count.value++;
+      function randomizeCounter() {
+        count.value = Math.round(100 * Math.random())
+      }
+
+      // 모든 요소 및 함수 Object 형태로 return
+      return {count, name, doubleCount, doublePlusOne, increment, randomizeCounter}
+    })
+    ```
+
+- 코드 분석
+  - `<state>`: 반응형 변수 형태인 ref, reactive로 선언한다.
+    - 예제코드
+      ```ts
+      const count = ref<number>(1);
+      const name = ref<string>('yooHyeok');
+      ```
+  - `<getters>`: computed 컴포저블을 활용한다.
+    - 예제코드
+      ```ts
+      const doubleCount = computed(() => count.value * 2);
+      const doublePlusOne = computed(() => count.value * 3);
+      ```
+  - `<actions>`: 컴포넌트 내에 선언하는 함수와 동일한 문법으로 정의하며, 화살표 함수, 함수 선언식 모두 지원된다.
+    - 예제코드
+      ```ts
+      const increment = () => count.value++; // 화살표 함수
+      function randomizeCounter() { // 함수 선언식
+        count.value = Math.round(100 * Math.random())
+      }
+      ```
+
+  - 정의한 모든 변수 및 함수를 Object 형태로 return
+    - 예제코드
+      ```ts
+      export const useExSetupStore = defineStore('essCounter', () => {
+        const count = ref<number>(1);
+        const name = ref<string>('yooHyeok');
+
+        // Getters
+        const doubleCount = computed(() => count.value * 2);
+        const doublePlusOne = computed(() => count.value * 3);
+
+        // Actions
+        const increment = () => count.value++;
+        function randomizeCounter() {
+          count.value = Math.round(100 * Math.random())
+        }
+
+        return {count, name, doubleCount, doublePlusOne, increment, randomizeCounter}
+      })
+      ```
+</details>
+<br>
+<br> 
+
+---
+---
+<br>
+
+### `컴포넌트 적용 - store모듈 직접 접근`
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+- #### options [/pages/pinia/options/index.vue](../pages/pinia/options/index.vue)
+  ```vue
+  <template>
+    <div class="page">
+      <div>
+        <span>Pinia Store - options counter</span>
+        <span>store.count: {{ store.count }}</span>
+        <span>store.name: {{ store.name }}</span>
+        <span>store.doubleCount: {{ store.doubleCount }}</span>
+        <span>store.addState1: {{ store.addState1 }}</span>
+        <span>store.addState2: {{ store.addState2 }}</span>
+        <span>store.addState2: {{ store.addState3 }}</span>
+        <span>store.addState2: {{ store.addState4 }}</span>
+        <button @click="store.incrementA()">증가A</button>
+        <button @click="store.incrementB()">증가B</button>
+        <button @click="store.incrementC()">증가C</button>
+        <button @click="store.randomizeCounter()">랜덤</button>
+      </div>
+    </div>
+  </template>
+  <script setup lang="ts">
+  import { useExOptionsStore } from "@/sotres/example"
+  const store = useExOptionsStore();
+  </script>
+  <style lang="scss" scoped>
+  .page {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+
+    width: calc(100% - 96px);
+
+    gap: 24px;
+
+    span {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      padding: 12px;
+      width: 100%;
+    }
+  }
+  </style>
+  ```
+
+- #### setup [/pages/pinia/setup/index.vue](../pages/pinia/setup/index.vue)
+  ```vue
+  <template>
+    <div class="page">
+      <div>
+        <span>Pinia Store - options counter</span>
+        <span>store.count: {{ store.count }}</span>
+        <span>store.name: {{ store.name }}</span>
+        <span>store.doubleCount: {{ store.doubleCount }}</span>
+        <span>store.doublePlusOne: {{ store.doublePlusOne }}</span>
+        <button @click="store.increment()">증가</button>
+        <button @click="store.randomizeCounter()">랜덤</button>
+      </div>
+    </div>
+  </template>
+  <script setup lang="ts">
+  import { useExSetupStore } from "@/sotres/example"
+  const store = useExSetupStore();
+
+  </script>
+  <style lang="scss" scoped>
+  .page {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+
+    width: calc(100% - 96px);
+
+    gap: 24px;
+
+    span {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      padding: 12px;
+      width: 100%;
+    }
+  }
+  </style>
+  ```
+</details>
+<br>
+
+### `컴포넌트 적용 - storeToRefs(store모듈) 접근`
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+pinia로 만들어진 store는 reactive로 래핑된 객체이다.
+이 말은 구조분해할당을 하면 state가 반응성을 읽게 된다.  
+구조분해 할당을 하고 나서도 state의 반응성을 유지하고 싶다면 pinia에서 vue의 toRefs와 동일한 기능을 제공하는 storeToRefs()를 사용해야 한다.
+toRefs 함수는 반응형 state변수의 반응성을 유지하기 위해 사용하는 함수이다.  
+함수(메서드)는 반응형 데이터가 아니므로 ref로 변환하지 않기 때문에 actions는 store객체 자체에서 구조분해 할당을 하고, 
+state는 store를 storeToRefs()의 매개변수로 전달하여 감싼 뒤 구조분해 할당 한다.
+
+- #### options [/pages/pinia/options/index.vue](../pages/pinia/options/index.vue)
+  ```vue
+  <template>
+    <div class="page">
+      <div>
+        <span>Pinia Store - options counter</span>
+        <span>count: {{ count }}</span>
+        <span>name: {{ name }}</span>
+        <span>doubleCount: {{ doubleCount }}</span>
+        <span>addState1: {{ addState1 }}</span>
+        <span>addState2: {{ addState2 }}</span>
+        <span>addState2: {{ addState3 }}</span>
+        <span>addState2: {{ addState4 }}</span>
+        <button @click="incrementA()">증가A</button>
+        <button @click="incrementB()">증가B</button>
+        <button @click="incrementC()">증가C</button>
+        <button @click="randomizeCounter()">랜덤</button>
+      </div>
+    </div>
+  </template>
+
+  <script setup lang="ts">
+  import { useExOptionsStore } from "@/sotres/example"
+  const store = useStore();
+  const { incrementA, incrementB, incrementC, randomizeCounter } = store;
+  const {count, name, doubleCount, addState1, addState2, addState3, addState4} = storeToRefs(store);
+  </script>
+
+  <style lang="scss" scoped>
+  .page {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+
+    width: calc(100% - 96px);
+
+    gap: 24px;
+
+    span {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      padding: 12px;
+      width: 100%;
+    }
+  }
+  </style>
+  ```
+  
+- #### setup [/pages/pinia/setup/index.vue](../pages/pinia/setup/index.vue)
+  ```vue
+  <template>
+    <div class="page">
+      <div>
+        <span>Pinia Store - options counter</span>
+        <span>count: {{ count }}</span>
+        <span>name: {{ name }}</span>
+        <span>doubleCount: {{ doubleCount }}</span>
+        <span>doublePlusOne: {{ doublePlusOne }}</span>
+        <button @click="increment()">증가</button>
+        <button @click="randomizeCounter()">랜덤</button>
+      </div>
+    </div>
+  </template>
+
+  <script setup lang="ts">
+  import { useExSetupStore } from "@/sotres/example"
+  const store = useExSetupStore();
+  const { increment, randomizeCounter } = store;
+  const {count, name, doubleCount, doublePlusOne} = storeToRefs(store);
+  </script>
+
+  <style lang="scss" scoped>
+  .page {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: center;
+
+    width: calc(100% - 96px);
+
+    gap: 24px;
+
+    span {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      padding: 12px;
+      width: 100%;
+    }
+  }
+  </style>
+  ```
+</details>
+<br>
+
+</details>
+<br>
+
+
 ## 템플릿
 <details>
 <summary>펼치기/접기</summary>
