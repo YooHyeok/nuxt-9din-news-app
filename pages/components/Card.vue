@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" @click="openSite">
     <div class="card__image-box">
       <img v-if="data.urlToImage" :src="data.urlToImage" alt="" class="card__image-box__image">
       <div v-else class="card__image-box__noData">등록된 이미지가 없습니다.</div>
@@ -68,7 +68,9 @@ const website = computed(() => {
 })
 
 const logo = computed(() => `http://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${website.value}&SIZE=16`)
-
+const openSite = () => {
+  window.open(data.value.url, "_blank")
+}
 </script>
 
 <style lang="scss" scoped>
