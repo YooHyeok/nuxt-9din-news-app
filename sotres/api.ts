@@ -34,8 +34,11 @@ export const useSetupStore = defineStore('essStore', () => {
     try {
       const response = await axios.get(API_URL)
       articleList.value = response.data.articles;
+      return response.data.articles;
     } catch(error) {
       console.error(error)
+      articleList.value = [];
+      return [];
     }
   }
 
