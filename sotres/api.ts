@@ -27,18 +27,18 @@ export const useSetupStore = defineStore('essStore', () => {
     searchValue.value = payload;
   }
 
-  const getNews = async () => {
+  const getNews = async (): Promise<Article[]> => {
     const API_KEY = '446b34f1bd1f4a5db6088713c26e38b8';
     const API_URL = `https://newsapi.org/v2/everything?q=${searchValue.value}&from=2025-07-12&sortBy=popularity&apiKey=${API_KEY}`;
 
     try {
-      const response = await axios.get(API_URL)
+      const response = await axios.get<{articles: Article[]}>(API_URL)
       articleList.value = response.data.articles;
       return response.data.articles;
     } catch(error) {
       console.error(error)
       articleList.value = [];
-      return [];
+      return []; // 실패 시에도 Promise<Article[]> 반환을 보장
     }
   }
 
