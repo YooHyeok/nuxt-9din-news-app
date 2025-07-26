@@ -1,9 +1,13 @@
 <template>
-  <div class="page">
+  <div v-if="!isLoading" class="loading">
+    <VueSpinnerIos size="48" color="red"/>
+  </div>
+  <div v-else class="page">
     <CardComponent v-for="article in data?.articles" :key="article.author" :data="article"/>
   </div>
 </template>
 <script setup lang="ts">
+import { VueSpinnerIos } from 'vue3-spinners';
 import CardComponent from '~/pages/components/Card.vue';
 import type { ApiStructure } from '~/types/api';
 
@@ -29,8 +33,11 @@ const API_URL = `https://newsapi.org/v2/everything?q=Apple&from=2025-07-12&sortB
  * axios와 같은 라이브러리로 ofetch 기반이다.  
  * 자동으로 JSON을 파싱하여 리턴해주며, 예외처리등의 후처리가 필요하지않아 편리하다.  
  */
-const {data, pending, error, refresh} = await useAsyncData<ApiStructure>("getNews", () => $fetch(API_URL));
-console.log(data.value)
+const isLoading = ref(false)
+const {data, pending, error, refresh} = useAsyncData<ApiStructure>("getNews", () => $fetch(API_URL));
+onMounted(() => {
+  isLoading.value = true;
+})
 </script>
 <style lang="scss" scoped>
 .page {
@@ -39,6 +46,13 @@ console.log(data.value)
   align-content: flex-start;
   justify-content: center;
 
+  width: calc(100% - 96px);
+
+  padding: 48px;
+  gap: 24px;
+}
+.loading {
+  @include flex-center;
   width: calc(100% - 96px);
 
   padding: 48px;
