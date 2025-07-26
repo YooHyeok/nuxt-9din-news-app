@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <CardComponent v-for="article in store?.articleList" :key="article.author" :data="article"/>
+    <CardComponent v-for="article in data" :key="article.author" :data="article"/>
   </div>
 </template>
 
@@ -10,7 +10,8 @@ import type { Article } from '~/types/api';
 
 import { useSetupStore } from '~/sotres/api';
 const store = useSetupStore();
-await useAsyncData("getNews", () => store.getNews());
+const {data, pending, error, refresh} = await useAsyncData<Article[]>("getNews", () => store.getNews());
+
 
 </script>
 

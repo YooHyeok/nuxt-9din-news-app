@@ -1,20 +1,21 @@
 <template>
   <div class="page">
-    <CardComponent v-for="article in store?.articleList" :key="article.author" :data="article"/>
+    <CardComponent v-for="article in data" :key="article.author" :data="article"/>
   </div>
 </template>
 
 <script setup lang="ts">
 import CardComponent from '~/pages/components/Card.vue';
-
 import { useSetupStore } from '~/sotres/api';
+import type { Article } from '~/types/api';
+
 const route = useRoute();
 const store = useSetupStore();
-store.changeSearchValue(String(route.params.id))
-onMounted(async () => {
-  await (async () => { store.changeSearchValue(String(route.params.id))})()
-  await useAsyncData("getNews", () => store.getNews());
-})
+
+// 최초 진입시 store값 변경 + 데이터 fetch
+store.changeSearchValue(String(route.params.id));
+const {data, pending, error, refresh} = await useAsyncData<Article[]>("getNews", () => store.getNews());
+
 
 </script>
 
