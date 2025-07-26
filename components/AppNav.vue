@@ -78,6 +78,19 @@ const navItems = ref<Nav[]> ([
         isClicked: false
     },
 ]);
+const route = useRoute();
+// 변동된 페이지 라우터 즉, URI 값을 감지해서 네비게이션 UI를 동적으로 변동되도록 하는 코드
+watch(
+    () => route.params?.id,
+    (n, o) => {
+      navItems.value.forEach((item: Nav) => {
+          const path = item.path;
+          if ((n === undefined && path === 'general') || n === path) item.isClicked = true;
+          else item.isClicked = false;
+      });
+    },
+    { immediate: true } // 컴포넌트 마운트 시에도 실행
+);
 </script>
 <style lang="scss" scoped>
 .nav {
@@ -112,6 +125,7 @@ const navItems = ref<Nav[]> ([
     }
 
   }
+
 }
 </style>
 
