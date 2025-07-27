@@ -21,7 +21,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useExSetupStore } from "@/sotres/example"
+import { useExSetupStore } from "~/stores/example"
 const store = useExSetupStore();
 
 const { increment, randomizeCounter } = store;

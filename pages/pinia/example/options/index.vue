@@ -31,7 +31,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useExOptionsStore } from "@/sotres/example"
+import { useExOptionsStore } from "~/stores/example"
 const store = useExOptionsStore();
 // const {count, name, doubleCount, addState1, addState2, addState3, addState4, incrementA, incrementB, incrementC} = store;
 /**

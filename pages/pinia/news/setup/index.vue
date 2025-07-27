@@ -11,7 +11,7 @@
 import { VueSpinnerIos } from 'vue3-spinners';
 import CardComponent from '~/pages/components/Card.vue';
 import type { Article } from '~/types/api';
-import { useSetupStore } from '~/sotres/api';
+import { useSetupStore } from '~/stores/api';
 
 const store = useSetupStore();
 const isLoading = ref(false)
