@@ -17,7 +17,7 @@ const fullPath = computed(() => {
     if (url.pathname.includes('setup')) {
       return `${url.origin}/${PINIA_NEWS_URL}/setup/`
     }
-    return `${url.origin}/${PINIA_NEWS_URL}/option/`
+    return `${url.origin}/${PINIA_NEWS_URL}/options/`
   }
   return `${url.origin}/`
 })
