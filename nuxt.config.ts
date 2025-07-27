@@ -3,6 +3,14 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
   devtools: { enabled: true },
   vite: {
+    server: {
+      // 개발 환경에서만 캐시 비활성화
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    },
     css: {
       preprocessorOptions: {
         scss: {
@@ -10,7 +18,7 @@ export default defineNuxtConfig({
           additionalData: '@use "@/assets/scss/global.scss" as *;'
         }
       }
-    }
+    },
   },
   modules: ['@pinia/nuxt']
 })
