@@ -228,3 +228,46 @@ vetur는 Vue 2 중심의 Extention이고, script setup 문법을 완벽하게 �
   ```
 </details>
 <br>
+
+## 동적 라우트 컴포넌트에서 브라우저 Redo시 scss mime type 오류
+<details>
+<summary>펼치기/접기</summary>
+<br>
+
+동적라우팅을 통해 진입 후 브라우저 기능인 redo 혹은 undo를 실행할 경우  
+500 상태에 대한 Failed to fetch dynamically imported module 오류가 발생한다.  
+
+이는 Vite의 HMR(Hot Module Replacement)에 의해 Nuxt의 실시간 업데이트 기능과 브라우저 캐시가 충돌되는 현상이다.  
+
+개발자 도구 네트워크 탭에서 .scss를 확인해보니 일부 컴포넌트에서 호출되는 style들이 자바스크립트로 구성되는 것으로 확인되었다.  
+
+이는 각 컴포넌트의 `<style lang="scss" scoped></style>` 태그가 vite HMR에 의해javascript 모듈로 래핑된 후 브라우저 캐시가 잘못된 매핑을 저장한다.  
+이후 뒤로가기를 눌렀을 때 캐시된 잘못된 파일을 불러온다.
+
+이는 Nuxt3에서 발생하는 scss 버그이다.  
+
+[관련 이슈링크](https://github.com/nuxt/nuxt/issues/15723)
+
+프로덕션 환경에서는 오류가 발생하지 않고 로컬환경에서만 오류가 발생하고 있다.  
+대응 방법으로는 `nuxt.config.ts` 파일에서 개발서버 캐시모드를 꺼두는 방법이다.  
+- nuxt.config.ts
+  ```ts
+  export default defineNuxtConfig({
+    compatibilityDate: '2025-05-15',
+    devtools: { enabled: true },
+    vite: {
+      server: {
+        // 개발 환경에서만 캐시 비활성화
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      },
+    }
+  })
+  ```
+
+
+</details>
+<br>
