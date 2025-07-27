@@ -1,11 +1,35 @@
 import { defineStore } from 'pinia';
 import axios from "axios"
 import type { Article } from '~/types/api';
+interface State {
+  searchValue: string;
+  articleList: Article[];
+}
 export const useOptionsStore = defineStore('eosStore', {
-  state: () => {return {}},
-  getters: {
+  state (): State {
+    return {
+      searchValue: 'korea',
+      articleList: [],
+    }
   },
   actions: {
+    changeSearchValue(payload: string) {
+      this.searchValue = payload;
+    },
+    async getNews(): Promise<Article[]> {
+    const API_KEY = '446b34f1bd1f4a5db6088713c26e38b8';
+    const API_URL = `https://newsapi.org/v2/everything?q=${this.searchValue}&from=2025-07-12&sortBy=popularity&apiKey=${API_KEY}`;
+
+    try {
+      const response = await axios.get<{articles: Article[]}>(API_URL)
+      this.articleList = response.data.articles;
+      return response.data.articles;
+    } catch(error) {
+      console.error(error)
+      this.articleList = [];
+      return []; // 실패 시에도 Promise<Article[]> 반환을 보장
+    }
+  }
   }
 })
 
